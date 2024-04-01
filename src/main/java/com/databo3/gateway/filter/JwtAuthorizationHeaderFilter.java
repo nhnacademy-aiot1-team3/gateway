@@ -1,6 +1,5 @@
 package com.databo3.gateway.filter;
 
-import com.databo3.gateway.exception.UserInBlackListException;
 import com.databo3.gateway.util.JwtUtil;
 import com.databo3.gateway.util.RouteValidator;
 import io.jsonwebtoken.*;
@@ -44,6 +43,7 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<J
 
             if (routeValidator.isSecured.test(request)) {
                 if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                    log.debug("No Header Authorization");
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
                 String jwtToken = Objects.requireNonNull(request.getHeaders().get(HttpHeaders.AUTHORIZATION)).get(0);
@@ -51,10 +51,14 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<J
                 log.debug("accessToken:{}", jwtToken);
 
                 if (!JwtUtil.isValidToken(jwtToken)) {
+                    log.debug("invalidToken: " + jwtToken);
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
-                checkBlackList(jwtToken);
+                if (isInBlackList(jwtToken)) {
+                    log.debug("user in blacklist: " + jwtToken);
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+                }
 
                 Claims claims = JwtUtil.parseClaims(jwtToken);
 
@@ -71,9 +75,8 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<J
         exchange.mutate().request(builder -> builder.header("X-USER-ID", memberId));
     }
 
-    public void checkBlackList(String accessToken) {
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(BLACKLIST_PREFIX + accessToken))) {
-                throw new UserInBlackListException(accessToken);
-            }
-        }
+    public boolean isInBlackList(String accessToken) {
+        return (Boolean.TRUE.equals(redisTemplate.hasKey(BLACKLIST_PREFIX + accessToken)));
     }
+}
+
