@@ -1,5 +1,6 @@
 package com.databo3.gateway.filter;
 
+import com.databo3.gateway.exception.UserInBlackListException;
 import com.databo3.gateway.util.JwtUtil;
 import com.databo3.gateway.util.RouteValidator;
 import io.jsonwebtoken.*;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -20,10 +22,14 @@ import java.util.Objects;
 @Slf4j
 public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<JwtAuthorizationHeaderFilter.Config> {
     private final RouteValidator routeValidator;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private static final String BLACKLIST_PREFIX = "blacklist:";
 
-    public JwtAuthorizationHeaderFilter(RouteValidator routeValidator) {
+
+    public JwtAuthorizationHeaderFilter(RouteValidator routeValidator, RedisTemplate<String, Object> redisTemplate) {
         super(Config.class);
         this.routeValidator = routeValidator;
+        this.redisTemplate = redisTemplate;
     }
 
     @Getter
@@ -48,6 +54,8 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<J
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
                 }
 
+                checkBlackList(jwtToken);
+
                 Claims claims = JwtUtil.parseClaims(jwtToken);
 
                 updateRequest(exchange, claims);
@@ -62,4 +70,10 @@ public class JwtAuthorizationHeaderFilter extends AbstractGatewayFilterFactory<J
 
         exchange.mutate().request(builder -> builder.header("X-USER-ID", memberId));
     }
-}
+
+    public void checkBlackList(String accessToken) {
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(BLACKLIST_PREFIX + accessToken))) {
+                throw new UserInBlackListException(accessToken);
+            }
+        }
+    }
