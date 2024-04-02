@@ -1,4 +1,4 @@
-package com.databo3.gateway;
+package live.databo3.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
