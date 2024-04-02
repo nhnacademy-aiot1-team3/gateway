@@ -1,0 +1,6 @@
+GET http://localhost:8888/api/account/member/1
+Accept: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoLXRva2VuIiwibWVtYmVySWQiOiJhZG1pbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn0seyJhdXRob3JpdHkiOiJST0xFX0FETUlOMSJ9XSwiaWF0IjoxNzExOTQ0ODc3LCJleHAiOjE3MTIwMzEyNzd9.FIKrtubh6LUYBkwc_sR_TxDQeTmA9-WpnZWQf4H_y28
+
+
+###
