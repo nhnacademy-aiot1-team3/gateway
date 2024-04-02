@@ -18,7 +18,7 @@ public class RouteValidator {
      * @since 1.0.0
      */
     public static final List<String> NEED_NOT_TOKEN_ENDPOINTS = List.of(
-            "/api/auth/login",
+            "/auth/login",
             "/api/account/member/register"
     );
 

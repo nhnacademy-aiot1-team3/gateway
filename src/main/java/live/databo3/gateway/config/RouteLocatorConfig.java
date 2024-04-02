@@ -30,7 +30,7 @@ public class RouteLocatorConfig {
     public RouteLocator myRoute(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("auth-service",
-                        p->p.path("/api/auth/**")
+                        p->p.path("/auth/**")
                                 .filters(f -> f.filter(jwtAuthorizationHeaderFilter.apply(new JwtAuthorizationHeaderFilter.Config())))
                                 .uri("lb://auth-service")
                 )
