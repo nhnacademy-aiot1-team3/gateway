@@ -25,6 +25,7 @@ public class RouteLocatorConfig {
      * path 에 맞게 요청을 알맞은 서버로 route 및 라운드로빈 해주는 메서드, 조건에 따라 특정 필터를 적용시킬 수 있다.
      * @param builder RouteLocator 를 구성하는데 필요한 빌더 파라미터
      * @return build 완료된 RouteLocator
+     * @since 1.0.0
      */
     @Bean
     public RouteLocator myRoute(RouteLocatorBuilder builder) {
