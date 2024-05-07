@@ -43,7 +43,7 @@ public class RouteLocatorConfig {
                 .route("sensor-service",
                         p->p.path("/api/sensor/**")
                                 .filters(f -> f.filter(jwtAuthorizationHeaderFilter.apply(new JwtAuthorizationHeaderFilter.Config())))
-                                .uri("lb://sensor-api")
+                                .uri("lb://sensor-service")
                 )
                 .build();
     }
