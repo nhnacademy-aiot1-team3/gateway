@@ -24,7 +24,8 @@ public class RouteValidator {
             "/api/account/member/register",
             "/api/account/member/duplicate/*",
             "/api/account/member/searchPassword/*",
-            "/api/account/member/email/*"
+            "/api/account/member/email/*",
+            "/api/sensor/**"
     );
 
     /**

@@ -40,6 +40,11 @@ public class RouteLocatorConfig {
                                 .filters(f -> f.filter(jwtAuthorizationHeaderFilter.apply(new JwtAuthorizationHeaderFilter.Config())))
                                 .uri("lb://account-service")
                 )
+                .route("sensor-service",
+                        p->p.path("/api/sensor/**")
+                                .filters(f -> f.filter(jwtAuthorizationHeaderFilter.apply(new JwtAuthorizationHeaderFilter.Config())))
+                                .uri("lb://sensor-api")
+                )
                 .build();
     }
 }
