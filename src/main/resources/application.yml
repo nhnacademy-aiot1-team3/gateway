@@ -36,6 +36,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: 'health','info'
+        include:
+          - 'health'
+          - 'info'
 jwt:
   secret: '9ae09bf9c7cd505d94621e3e3caa40c4108d1db2b069d8a11d467766a85d7c4a'
