@@ -70,7 +70,7 @@ class JwtAuthorizationHeaderFilterTest {
 
     @Test
     void testExchangeSuccess() {
-        String validToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZXhwIjo1MDE2MjM5MDIyLCJtZW1iZXJJZCI6InVzZXIifQ.gOC0DPGlKsxXFMDvxBsj1paULvdfAKj-8IqmDK5n_w0";
+        String validToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhY2Nlc3MtdG9rZW4iLCJtZW1iZXJJZCI6ImFkbWluIiwibWVtYmVyRW1haWwiOiJhMDEwNjI3MDQzMTJAZ21haWwuY29tIiwicm9sZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImlhdCI6MTcxNTIxNjE5NCwiZXhwIjozMzMzMzMzMzMzfQ.ll2McLgLuW0UOpaMdIctAqhN56CywZEpPFy5nTtvDDmgWUXLu9hLrQfp873jaRZC2fcaKeg8YAnmrGR5oAN3VQ";
         when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
         webTestClient.get()
