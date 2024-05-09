@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.util.Date;
 
 /**
@@ -38,8 +40,9 @@ public class JwtUtil {
      */
     public static boolean isValidToken(String token) {
         try {
+            Key key = new SecretKeySpec(secret.getBytes(),SignatureAlgorithm.HS256.getJcaName());
             Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(secret)
+                    .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
             Date now = new Date();
@@ -57,7 +60,8 @@ public class JwtUtil {
      * @since 1.0.0
      */
     public static Claims parseClaims(String token) {
-        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
+        Key key = new SecretKeySpec(secret.getBytes(),SignatureAlgorithm.HS256.getJcaName());
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return claimsJws.getBody();
     }
 }
