@@ -44,6 +44,9 @@ public class RouteLocatorConfig {
                         p->p.path("/api/sensor/**")
                                 .filters(f -> f.filter(jwtAuthorizationHeaderFilter.apply(new JwtAuthorizationHeaderFilter.Config())))
                                 .uri("lb://sensor-service")
+                ).route("rule-engine",
+                        p->p.path("/api/ruleengine/**")
+                                .uri("lb://rule-engine")
                 )
                 .build();
     }
